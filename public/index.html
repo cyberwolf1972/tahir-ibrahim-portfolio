@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tahir Ibrahim | DevOps Core</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .terminal-glow { box-shadow: 0 0 20px rgba(34, 211, 238, 0.15); }
+        .cursor-blink { animation: blink 1s infinite; }
+        @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-mono p-4 md:p-8 selection:bg-cyan-500 selection:text-slate-900">
+
+    <!-- Top Dashboard Header -->
+    <header class="max-w-6xl mx-auto mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 border border-slate-800 rounded-lg bg-slate-900/40">
+        <div>
+            <h1 class="text-2xl font-bold text-cyan-400">tahir-ibrahim-node-01</h1>
+            <p class="text-xs text-slate-500">Uptime: <span id="uptime">00:00:00</span> | Status: <span class="text-emerald-400">● Operational</span></p>
+        </div>
+        <div class="flex gap-3 text-xs">
+            <div class="bg-slate-800 p-2 rounded border border-slate-700">AWS Region: <span class="text-amber-400 font-bold">us-east-1</span></div>
+            <div class="bg-slate-800 p-2 rounded border border-slate-700">K8s Cluster: <span class="text-purple-400 font-bold">v1.30-prod</span></div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- LEFT: Interactive Terminal Console (2 Columns wide on large screens) -->
+        <section class="lg:col-span-2 flex flex-col border border-slate-800 rounded-lg bg-slate-900 terminal-glow overflow-hidden min-h-[450px]">
+            <!-- Terminal Title Bar -->
+            <div class="bg-slate-850 px-4 py-2 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex gap-2">
+                    <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                </div>
+                <span class="text-xs text-slate-400 font-bold">tahir@devops-core:~</span>
+                <span class="text-xs text-cyan-500/50">sh</span>
+            </div>
+            
+            <!-- Terminal Output/Input Area -->
+            <div id="terminal-body" class="p-4 flex-grow overflow-y-auto text-sm space-y-2 max-h-[400px]">
+                <p class="text-slate-500">Type <span class="text-cyan-400 font-bold">help</span> to view available system commands.</p>
+                <p class="text-slate-400">Welcome back, Engineer Ibrahim. Systems initialized.</p>
+            </div>
+            
+            <!-- Dynamic Command Input Line -->
+            <div class="p-4 border-t border-slate-800 bg-slate-950 flex items-center gap-2">
+                <span class="text-emerald-400 font-bold">tahir_ibrahim_core $></span>
+                <input type="text" id="terminal-input" class="bg-transparent focus:outline-none text-cyan-400 flex-grow" autofocus placeholder="Type command here..." autocomplete="off">
+                <span class="cursor-blink text-cyan-400 font-bold">_</span>
+            </div>
+        </section>
+
+        <!-- RIGHT: Live Cloud Metrics & Pipeline Simulator -->
+        <section class="flex flex-col gap-6">
+            
+            <!-- Microservice Health Monitoring Board -->
+            <div class="border border-slate-800 rounded-lg bg-slate-900 p-4">
+                <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center justify-between">
+                    <span>Cluster Microservices</span>
+                    <span class="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
+                </h2>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-2 bg-slate-950 rounded border border-slate-850">
+                        <span class="text-xs text-slate-300">auth-service-pod</span>
+                        <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">Running</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-slate-950 rounded border border-slate-850">
+                        <span class="text-xs text-slate-300">payment-gateway-api</span>
+                        <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">Running</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-slate-950 rounded border border-slate-850">
+                        <span class="text-xs text-slate-300">notification-worker</span>
+                        <span id="worker-status" class="text-xs bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded border border-amber-500/20 animate-pulse">Idling</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive GitOps Git Push Simulation Trigger -->
+            <div class="border border-slate-800 rounded-lg bg-slate-900 p-4 flex-grow flex flex-col justify-between">
+                <div>
+                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Interactive CI/CD Demo</h2>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Click below to simulate a GitOps code push and see an automated pipeline execution happen in real time.</p>
+                </div>
+                
+                <!-- Action Pipeline Stream Window -->
+                <div id="pipeline-stream" class="bg-slate-950 p-3 rounded text-xs text-slate-500 font-mono mb-4 h-28 overflow-y-auto border border-slate-850 space-y-1">
+                    Pipeline idle. Awaiting code deployment trigger...
+                </div>
+
+                <button onclick="triggerPipelineSimulation()" class="w-full py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-md transition duration-200 text-sm shadow-md active:scale-[0.98]">
+                    🚀 Git Push 'main' (Deploy App Update)
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Project Matrix Footer Section -->
+    <footer class="max-w-6xl mx-auto mt-8 border-t border-slate-800 pt-6 text-center text-xs text-slate-500">
+        <p>Built with TailwindCSS. Engineered by Tahir Ibrahim. Powered by absolute automation.</p>
+    </footer>
+
+    <!-- Interactive Engine Logic Script -->
+    <script>
+        // System Uptime Counter Simulator
+        let startTime = Date.now();
+        setInterval(() => {
+            let elapsed = Date.now() - startTime;
+            let secs = Math.floor((elapsed / 1000) % 60).toString().padStart(2, '0');
+            let mins = Math.floor((elapsed / (1000 * 60)) % 60).toString().padStart(2, '0');
+            let hrs = Math.floor((elapsed / (1000 * 60 * 60)) % 24).toString().padStart(2, '0');
+            document.getElementById('uptime').innerText = `${hrs}:${mins}:${secs}`;
+        }, 1000);
+
+        // Terminal Core Processing Engine
+        const inputField = document.getElementById('terminal-input');
+        const terminalBody = document.getElementById('terminal-body');
+
+        const COMMAND_ROUTER = {
+            help: "Available Actions:<br> <span class='text-cyan-400'>about</span>    - Deep dive on my backgrounds<br> <span class='text-cyan-400'>skills</span>   - List active core technical engineering stack<br> <span class='text-cyan-400'>projects</span> - Deep engineering breakdown of key apps built<br> <span class='text-cyan-400'>clear</span>    - Wipe the console screen buffer clean",
+            about: "<b>Tahir Ibrahim</b> — Infrastructure & Platform Engineer specializing in high-velocity infrastructure architecture, multi-cloud platforms, zero-downtime architecture patterns, and enterprise security guardrails.",
+            skills: "<b>[Infrastructure As Code]</b>: Terraform, Ansible<br><b>[Orchestration & Containerization]</b>: Docker, Kubernetes, Helm<br><b>[CI/CD Engine]</b>: GitHub Actions, GitLab CI/CD, Jenkins<br><b>[Cloud Infrastructure Providers]</b>: AWS (EKS, IAM, RDS, VPC), Google Cloud Platform",
+            projects: "<b>1. ArgoCD GitOps Control Plane</b><br>&nbsp;&nbsp;&nbsp;- Automated secure cluster synchronizations via Declarative GitOps architectures.<br><b>2. High Availability Global Network Topology via Multi-Region Terraform Modules</b><br>&nbsp;&nbsp;&nbsp;- Provisioned fully redundant, auto-scaling microservice footprints across cross-continental AWS infrastructures.",
+            clear: ""
+        };
+
+        inputField.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const targetValue = this.value.trim().toLowerCase();
+                if(!targetValue) return;
+
+                // Echo the User Command Line Entry
+                const userLine = document.createElement('p');
+                userLine.innerHTML = `<span class="text-emerald-400 font-bold">tahir_ibrahim_core $></span> <span class="text-white">${this.value}</span>`;
+                terminalBody.appendChild(userLine);
+
+                // Handle commands
+                if (targetValue === 'clear') {
+                    terminalBody.innerHTML = '';
+                } else if (COMMAND_ROUTER[targetValue] !== undefined) {
+                    const systemLine = document.createElement('p');
+                    systemLine.innerHTML = COMMAND_ROUTER[targetValue];
+                    terminalBody.appendChild(systemLine);
+                } else {
+                    const errorLine = document.createElement('p');
+                    errorLine.innerHTML = `<span class="text-rose-500">Command syntax not verified: '${targetValue}'. Run 'help' for standard operation inputs.</span>`;
+                    terminalBody.appendChild(errorLine);
+                }
+
+                this.value = '';
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+        });
+
+        // Live Interactive Pipeline Trigger Simulator Logic 
+        let isRunningPipeline = false;
+        function triggerPipelineSimulation() {
+            if (isRunningPipeline) return;
+            isRunningPipeline = true;
+
+            const stream = document.getElementById('pipeline-stream');
+            const workerStatus = document.getElementById('worker-status');
+            stream.innerHTML = ''; // Reset pipeline terminal screen entries
+
+            const buildLogs = [
+                "✨ Git webhook hook received: commit [feat: live-patch-04]",
+                "📦 Spin up runner agent container instance... success",
+                "🔑 Injecting secure repository secrets...",
+                "🔨 Running test execution suite: `npm run test:unit`...",
+                "✅ All 42 production tests executed successfully.",
+                "🐳 Docker multi-stage container compilation initialized...",
+                "📤 Pushing built image layer to AWS ECR registry repo...",
+                "🚀 Triggering rolling deployment rollout to remote K8s Cluster...",
+                "🎉 Cluster deployment successfully initialized! Zero errors detected."
+            ];
+
+            workerStatus.className = "text-xs bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded border border-blue-500/20 animate-pulse";
+            workerStatus.innerText = "Building...";
+
+            buildLogs.forEach((logText, index) => {
+                setTimeout(() => {
+                    const logLine = document.createElement('div');
+                    logLine.className = index === buildLogs.length - 1 ? "text-emerald-400 font-bold" : "text-slate-300";
+                    logLine.innerText = logText;
+                    stream.appendChild(logLine);
+                    stream.scrollTop = stream.scrollHeight;
+
+                    // When completed
+                    if (index === buildLogs.length - 1) {
+                        workerStatus.className = "text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20";
+                        workerStatus.innerText = "Active (Up-to-date)";
+                        isRunningPipeline = false;
+                    }
+                }, index * 950);
+            });
+        }
+    </script>
+</body>
+</html>
