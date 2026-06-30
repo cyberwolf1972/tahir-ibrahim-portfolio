@@ -8,6 +8,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      secrets: read
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -21,4 +25,4 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync . s3://tahir-ibrahim-portfolio-2026 --exclude ".git/*" --exclude ".github/*"
+          aws s3 sync ./public s3://tahir-ibrahim-portfolio-2026 --exclude ".git/*" --exclude ".github/*"
